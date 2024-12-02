@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>電影購票系統</h1>
+
+        <!-- 電影選擇 -->
+        <h2>選擇電影：</h2>
+        <div id="movies" class="movies">
+            <!-- 這裡的卡片將由 JS 動態生成 -->
+        </div>
+
+        <!-- 場次選擇 -->
+        <label for="showtime">選擇場次：</label>
+        <select id="showtime">
+            <option value="10:00">10:00</option>
+            <option value="14:00">14:00</option>
+            <option value="18:00">18:00</option>
+            <option value="21:00">21:00</option>
+        </select>
+
+        <!-- 座位區 -->
+        <div class="seat-container">
+            <h2>選擇座位：</h2>
+            <div class="seats">
+                <!-- 座位範例 -->
+                <div class="row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+                <div class="row">
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                    <div class="seat"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 購票總計 -->
+        <p id="summary">已選座位數：<span id="count">0</span>，總金額：NT$<span id="total">0</span></p>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
