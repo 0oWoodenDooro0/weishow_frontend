@@ -65,3 +65,31 @@ function navigateTo(pageId) {
     pages.forEach(page => page.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
 }
+
+
+// 動態生成電影卡片
+function renderMovies(data) {
+    moviesContainer.innerHTML = ""; // 清空容器
+    data.forEach((movie) => {
+        const card = document.createElement("div");
+        card.classList.add("movie-card");
+        card.innerHTML = `
+            <img src="${movie.img}" alt="${movie.title}">
+            <h3>${movie.title}</h3>
+            <p>票價：NT$${movie.price}</p>
+        `;
+        moviesContainer.appendChild(card);
+    });
+}
+
+// 初始化渲染所有電影
+renderMovies(movies);
+
+// 搜尋功能
+function filterMovies() {
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+    const filteredMovies = movies.filter((movie) =>
+        movie.title.toLowerCase().includes(query)
+    );
+    renderMovies(filteredMovies);
+}
