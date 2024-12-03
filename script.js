@@ -1,12 +1,10 @@
 const moviesContainer = document.getElementById('movies');
-const showtimeSelect = document.getElementById('showtime');
 const seats = document.querySelectorAll('.seat:not(.occupied)');
 const count = document.getElementById('count');
 const total = document.getElementById('total');
-
 let ticketPrice = 0;
 
-// 電影資料
+// 動態生成電影資料
 const movies = [
     { title: "鋼鐵人", price: 180, img: "./鋼鐵人1.jpg" },
     { title: "雷神索爾", price: 180, img: "./雷神索爾.jpg" },
@@ -27,8 +25,7 @@ const movies = [
     { title: "黑豹", price: 180, img: "./黑豹.jpg" },
 ];
 
-// 動態生成電影選項
-movies.forEach((movie, index) => {
+movies.forEach(movie => {
     const card = document.createElement('div');
     card.classList.add('movie-card');
     card.innerHTML = `
@@ -45,7 +42,6 @@ movies.forEach((movie, index) => {
     moviesContainer.appendChild(card);
 });
 
-// 更新總計
 function updateSummary() {
     const selectedSeats = document.querySelectorAll('.seat.selected');
     const selectedSeatsCount = selectedSeats.length;
@@ -54,7 +50,6 @@ function updateSummary() {
     total.textContent = selectedSeatsCount * ticketPrice;
 }
 
-// 座位點擊事件
 seats.forEach(seat => {
     seat.addEventListener('click', () => {
         if (!seat.classList.contains('occupied')) {
@@ -63,3 +58,10 @@ seats.forEach(seat => {
         }
     });
 });
+
+// 實現頁面切換功能
+function navigateTo(pageId) {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => page.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+}

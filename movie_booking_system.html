@@ -7,46 +7,53 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>電影購票系統</h1>
+    <div class="layout">
+        <!-- 側邊欄 -->
+        <aside class="sidebar">
+            <h2>功能選單</h2>
+            <ul>
+                <li><button onclick="navigateTo('booking')">訂票畫面</button></li>
+                <li><button onclick="navigateTo('schedule')">電影時刻查詢</button></li>
+                <li><button onclick="navigateTo('membership')">會員查詢</button></li>
+            </ul>
+        </aside>
 
-        <!-- 電影選擇 -->
-        <h2>選擇電影：</h2>
-        <div id="movies" class="movies">
-            <!-- 這裡的卡片將由 JS 動態生成 -->
-        </div>
-
-        <!-- 場次選擇 -->
-        <label for="showtime">選擇場次：</label>
-        <select id="showtime">
-            <option value="10:00">10:00</option>
-            <option value="14:00">14:00</option>
-            <option value="18:00">18:00</option>
-            <option value="21:00">21:00</option>
-        </select>
-
-        <!-- 座位區 -->
-        <div class="seat-container">
-            <h2>選擇座位：</h2>
-            <div class="seats">
-                <!-- 座位範例 -->
-                <div class="row">
-                    <div class="seat"></div>
-                    <div class="seat"></div>
-                    <div class="seat"></div>
-                    <div class="seat"></div>
+        <!-- 內容區域 -->
+        <main class="content">
+            <div id="booking" class="page active">
+                <h1>電影購票系統</h1>
+                <!-- 原有的訂票內容 -->
+                <h2>選擇電影：</h2>
+                <div id="movies" class="movies"></div>
+                <label for="showtime">選擇場次：</label>
+                <select id="showtime">
+                    <option value="10:00">10:00</option>
+                    <option value="14:00">14:00</option>
+                    <option value="18:00">18:00</option>
+                    <option value="21:00">21:00</option>
+                </select>
+                <div class="seat-container">
+                    <h2>選擇座位：</h2>
+                    <div class="seats">
+                        <div class="row">
+                            <div class="seat"></div>
+                            <div class="seat"></div>
+                            <div class="seat"></div>
+                            <div class="seat"></div>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="seat"></div>
-                    <div class="seat"></div>
-                    <div class="seat"></div>
-                    <div class="seat"></div>
-                </div>
+                <p id="summary">已選座位數：<span id="count">0</span>，總金額：NT$<span id="total">0</span></p>
             </div>
-        </div>
-
-        <!-- 購票總計 -->
-        <p id="summary">已選座位數：<span id="count">0</span>，總金額：NT$<span id="total">0</span></p>
+            <div id="schedule" class="page">
+                <h1>電影時刻查詢</h1>
+                <p>這裡顯示電影時刻表...</p>
+            </div>
+            <div id="membership" class="page">
+                <h1>會員查詢</h1>
+                <p>這裡顯示會員相關資訊...</p>
+            </div>
+        </main>
     </div>
 
     <script src="script.js"></script>
