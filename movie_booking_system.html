@@ -10,6 +10,7 @@
     <div class="layout">
         <!-- 側邊欄 -->
         <aside class="sidebar">
+            <h1 class="logo">萎鏽電影</h1>
             <h2>功能選單</h2>
             <ul>
                 <li><button onclick="navigateTo('booking')">訂票畫面</button></li>
@@ -20,10 +21,17 @@
 
         <!-- 內容區域 -->
         <main class="content">
+            <!-- 搜尋欄 -->
+            <div class="search-bar">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="輸入電影名稱搜尋..."
+                    oninput="filterMovies()"
+                />
+            </div>
             <div id="booking" class="page active">
-                <h1>電影購票系統</h1>
                 <!-- 原有的訂票內容 -->
-                <h2>選擇電影：</h2>
                 <div id="movies" class="movies"></div>
                 <label for="showtime">選擇場次：</label>
                 <select id="showtime">
