@@ -7,21 +7,23 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="mainbar">
+        <button onclick="ControlSidebar()">☰</button>
+        <b>萎鏽電影</b>
+    </div>
     <div class="layout">
         <!-- 側邊欄 -->
-        <aside class="sidebar">
-            <h1 class="logo">萎鏽電影</h1>
-            <h2>功能選單</h2>
+        <aside class="sidebar sidebarclosed" id="sidebar">
             <ul>
                 <li><button onclick="navigateTo('booking')">訂票畫面</button></li>
                 <li><button onclick="navigateTo('schedule')">電影時刻查詢</button></li>
                 <li><button onclick="navigateTo('membership')">會員查詢</button></li>
             </ul>
         </aside>
-
         <!-- 內容區域 -->
         <main class="content">
             <!-- 搜尋欄 -->
+
             <div class="search-bar">
                 <input
                     type="text"

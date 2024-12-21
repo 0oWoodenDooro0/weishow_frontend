@@ -9,49 +9,66 @@
     font-size: 24px;
     color: #fff;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
-
+/* 上邊主欄 */
+.mainbar {
+    height: 75px;
+    width: 100%;
+    display:flex;
+    background-color: #111111;
+}
+.mainbar button {
+    height: 100%;
+    width: 75px;
+    font-size: 36px;
+    color: #fff;
+    background-color: #111111;
+}
+.mainbar b {
+    padding-left: 20px;
+    font-size: 48px;
+    color: #fff;
+}
 /* 側邊欄 */
 .sidebar {
-    width: 200px;
-    background-color: #333;
+    height: 100%;
+    width: 300px;
+    background-color: #222;
     color: #fff;
-    padding: 20px;
+    position: absolute;
+    padding-top: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
 
-.sidebar h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 18px;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
+    left: 0;
+    transition: left 0.5s ease;
+    
 }
 
 .sidebar li {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .sidebar button {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     border: none;
-    background-color: #444;
+    border-radius: 5px;
+    background-color: #333;
     color: #fff;
     cursor: pointer;
-    border-radius: 4px;
     text-align: left;
 }
 
 .sidebar button:hover {
-    background-color: #555;
+    background-color: #444;
 }
 
+.sidebar.sidebarclosed {
+    left: -300px;
+    overflow: hidden;
+}
 /* 內容區域 */
 .content {
     flex-grow: 1;
@@ -118,4 +135,16 @@
 .movie-card.highlight {
     background-color: #f0f8ff;
     border-color: #6c63ff;
+}
+/* 移除預設白邊 */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 表格黑底欄 */
+
+.blackbar {
+    background-color: #000000;
+    color: #fff;
 }

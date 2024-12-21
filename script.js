@@ -2,7 +2,10 @@ const moviesContainer = document.getElementById('movies');
 const seats = document.querySelectorAll('.seat:not(.occupied)');
 const count = document.getElementById('count');
 const total = document.getElementById('total');
+const mainbar = document.getElementById("mainbar")
+const sidebar = document.getElementById("sidebar");
 let ticketPrice = 0;
+let isSidebarOpen = false;
 
 // 動態生成電影資料
 const movies = [
@@ -92,4 +95,14 @@ function filterMovies() {
         movie.title.toLowerCase().includes(query)
     );
     renderMovies(filteredMovies);
+}
+
+function ControlSidebar() {
+    isSidebarOpen = !isSidebarOpen;
+    if(isSidebarOpen){
+        sidebar.classList.remove("sidebarclosed");
+    }
+    else{
+        sidebar.classList.toggle("sidebarclosed");
+    }
 }
