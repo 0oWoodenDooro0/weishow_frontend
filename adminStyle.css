@@ -46,7 +46,17 @@ tr:nth-child(even) {
     font-size: 48px;
     color: #fff;
 }
+.mainbar b{
+    margin-right: 20px;
+}
 .blackbar {
     background-color: #000000;
+    color: #fff;
+}
+
+/* 功能鍵 */
+.MemberManage_bt{
+    width: 100px;
+    background-color: #222222;
     color: #fff;
 }
