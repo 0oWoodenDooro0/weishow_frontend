@@ -13,7 +13,8 @@
             <h1 class="logo">萎鏽電影</h1>
             <h2>功能選單</h2>
             <ul>
-                <li><button onclick="navigateTo('booking')">訂票畫面</button></li>
+                <li><button onclick="navigateTo('Booking')">訂票</button></li>
+                <li><button onclick="navigateTo('Introducing')">電影介紹</button></li>
                 <li><button onclick="navigateTo('schedule')">電影時刻查詢</button></li>
                 <li><button onclick="navigateTo('membership')">會員查詢</button></li>
             </ul>
@@ -30,37 +31,11 @@
                     oninput="filterMovies()"
                 />
             </div>
-            <div id="booking" class="page active">
+            <div id="Introducing" class="page active">
                 <!-- 原有的訂票內容 -->
                 <div id="movies" class="movies"></div>
-                <label for="showtime">選擇場次：</label>
-                <select id="showtime">
-                    <option value="10:00">10:00</option>
-                    <option value="14:00">14:00</option>
-                    <option value="18:00">18:00</option>
-                    <option value="21:00">21:00</option>
-                </select>
-                <div class="seat-container">
-                    <h2>選擇座位：</h2>
-                    <div class="seats">
-                        <div class="row">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
-                    </div>
-                </div>
-                <p id="summary">已選座位數：<span id="count">0</span>，總金額：NT$<span id="total">0</span></p>
             </div>
-            <div id="schedule" class="page">
-                <h1>電影時刻查詢</h1>
-                <p>這裡顯示電影時刻表...</p>
-            </div>
-            <div id="membership" class="page">
-                <h1>會員查詢</h1>
-                <p>這裡顯示會員相關資訊...</p>
-            </div>
+                
         </main>
     </div>
 
