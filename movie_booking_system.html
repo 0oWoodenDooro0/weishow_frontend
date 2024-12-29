@@ -30,10 +30,6 @@
                             <i class="fas fa-map-marker-alt"></i> 請選擇影城
                         </label>
                         <select id="location" required>
-                            <option value="">請選擇影城</option>
-                            <option value="1">台北影城</option>
-                            <option value="2">台中影城</option>
-                            <option value="3">高雄影城</option>
                         </select>
                     </div>
             
@@ -42,10 +38,6 @@
                             <i class="fas fa-film"></i> 請選擇影片
                         </label>
                         <select id="movie" required>
-                            <option value="">請選擇影片</option>
-                            <option value="ironman">鋼鐵人</option>
-                            <option value="spiderman">蜘蛛人</option>
-                            <option value="captain">美國隊長</option>
                         </select>
                     </div>
             
@@ -62,15 +54,18 @@
                         </label>
                         <select id="time" required>
                             <option value="">請選擇場次</option>
-                            <option value="10:00">10:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="18:00">18:00</option>
                         </select>
+                    </div>
+                    <div id="seating" class="seating">
+                        <h3>選擇座位</h3>
+                        <div class="screen">銀幕位置</div>
+                        <div class="seat-map">
+                        </div>
+                        <button type="button" onclick="confirmSeats()">確認座位</button>
                     </div>
             
                     <div class="buttons">
                         <button type="button" onclick="goToBooking()">前往訂票</button>
-                        <button type="button" onclick="checkSeats()">查看座位</button>
                     </div>
                 </form>
             </div>
