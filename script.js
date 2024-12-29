@@ -83,5 +83,42 @@ function navigateTo(pageId) {
     document.getElementById(pageId).classList.add('active');
 }
 
+// 購票功能
+function goToBooking() {
+    const location = document.getElementById("location").value;
+    const movie = document.getElementById("movie").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+
+    if (!location || !movie || !date || !time) {
+        alert("請完整填寫所有欄位！");
+        return;
+    }
+
+    alert(`前往訂票：
+影城: ${location}
+影片: ${movie}
+日期: ${date}
+場次: ${time}`);
+}
+
+function checkSeats() {
+    const location = document.getElementById("location").value;
+    const movie = document.getElementById("movie").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+
+    if (!location || !movie || !date || !time) {
+        alert("請完整填寫所有欄位！");
+        return;
+    }
+
+    alert(`查看座位：
+影城: ${location}
+影片: ${movie}
+日期: ${date}
+場次: ${time}`);
+}
+
 // 初始化：拉取電影資料
 fetchMovies();

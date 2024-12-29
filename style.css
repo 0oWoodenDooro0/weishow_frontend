@@ -45,7 +45,7 @@
     color: #fff;
     cursor: pointer;
     border-radius: 4px;
-    text-align: left;
+    text-align: center;
 }
 
 .sidebar button:hover {
@@ -118,4 +118,68 @@
 .movie-card.highlight {
     background-color: #f0f8ff;
     border-color: #6c63ff;
+}
+
+
+/* 訂票頁面 */
+.quick-booking {
+    background-color: #1a73e8; /* 深藍背景色 */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    margin: auto;
+    text-align: left;
+}
+
+.quick-booking h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+label i {
+    margin-right: 8px;
+}
+
+select,
+input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 48%;
+    text-align: center;
+}
+
+button:hover {
+    background-color: #0056b3;
 }

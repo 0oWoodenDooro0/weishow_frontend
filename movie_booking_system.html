@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>1
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,6 @@
         <!-- 側邊欄 -->
         <aside class="sidebar">
             <h1 class="logo">萎鏽電影</h1>
-            <h2>功能選單</h2>
             <ul>
                 <li><button onclick="navigateTo('Booking')">訂票</button></li>
                 <li><button onclick="navigateTo('Introducing')">電影介紹</button></li>
@@ -22,20 +21,63 @@
 
         <!-- 內容區域 -->
         <main class="content">
-            <!-- 搜尋欄 -->
-            <div class="search-bar">
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="輸入電影名稱搜尋..."
-                    oninput="filterMovies()"
-                />
+            <!-- 訂票 -->
+            <div id="Booking" class="page">
+                <h2>訂票</h2>
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label for="location">
+                            <i class="fas fa-map-marker-alt"></i> 請選擇影城
+                        </label>
+                        <select id="location" required>
+                            <option value="">請選擇影城</option>
+                            <option value="1">台北影城</option>
+                            <option value="2">台中影城</option>
+                            <option value="3">高雄影城</option>
+                        </select>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="movie">
+                            <i class="fas fa-film"></i> 請選擇影片
+                        </label>
+                        <select id="movie" required>
+                            <option value="">請選擇影片</option>
+                            <option value="ironman">鋼鐵人</option>
+                            <option value="spiderman">蜘蛛人</option>
+                            <option value="captain">美國隊長</option>
+                        </select>
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="date">
+                            <i class="fas fa-calendar-alt"></i> 請選擇日期
+                        </label>
+                        <input type="date" id="date" required />
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="time">
+                            <i class="fas fa-clock"></i> 請選擇場次
+                        </label>
+                        <select id="time" required>
+                            <option value="">請選擇場次</option>
+                            <option value="10:00">10:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="18:00">18:00</option>
+                        </select>
+                    </div>
+            
+                    <div class="buttons">
+                        <button type="button" onclick="goToBooking()">前往訂票</button>
+                        <button type="button" onclick="checkSeats()">查看座位</button>
+                    </div>
+                </form>
             </div>
+            <!-- 電影介紹 -->
             <div id="Introducing" class="page active">
-                <!-- 原有的訂票內容 -->
                 <div id="movies" class="movies"></div>
             </div>
-                
         </main>
     </div>
 
