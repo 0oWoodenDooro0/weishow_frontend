@@ -3,6 +3,12 @@ const seats = document.querySelectorAll('.seat:not(.occupied)');
 const count = document.getElementById('count');
 const total = document.getElementById('total');
 let ticketPrice = 0;
+const API_URL = "http://woodendoor.duckdns.org:8080";
+const AUTH_TOKEN = "Bearer a974f9b8a917f49dd75168ff85072644";
+
+var myHeaders = new Headers();
+myHeaders.append("Authorization", AUTH_TOKEN);
+myHeaders.append("Content-Type", "application/json");
 
 // 動態生成電影資料
 const movies = [
@@ -93,3 +99,72 @@ function filterMovies() {
     );
     renderMovies(filteredMovies);
 }
+
+// 註冊功能
+document.getElementById("registerForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // 防止表單提交刷新頁面
+
+    const name = document.getElementById("registerUsername").value.trim();
+    const email = document.getElementById("registerEmail").value.trim();
+    const password = document.getElementById("registerPassword").value.trim();
+    const message = document.getElementById("registerMessage");
+
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({ name, email, password }),
+        redirect: "follow",
+    };
+
+    fetch(`${API_URL}/member/register`, requestOptions)
+        .then((response) => {
+            if (response.ok || response.created) {
+                return response.json();
+            } else {
+                throw new Error("註冊失敗，請檢查資料！");
+            }
+        })
+        .then((data) => {
+            message.textContent = "註冊成功！";
+            message.style.color = "green";
+            document.getElementById("registerForm").reset();
+        })
+        .catch((error) => {
+            message.textContent = error.message;
+            message.style.color = "red";
+        });
+});
+
+// 登入功能
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // 防止表單提交刷新頁面
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value.trim();
+    const message = document.getElementById("loginMessage");
+
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({ email, password }),
+        redirect: "follow",
+    };
+
+    fetch(`${API_URL}/member/login`, requestOptions)
+        .then((response) => {
+            if (response.ok || response.created) {
+                return response.json();
+            } else {
+                throw new Error("登入失敗，請檢查帳號或密碼！");
+            }
+        })
+        .then((data) => {
+            message.textContent = `歡迎回來，${data.name}！`;
+            message.style.color = "green";
+            // 可在此處儲存 token 或執行其他登入成功後的邏輯
+        })
+        .catch((error) => {
+            message.textContent = error.message;
+            message.style.color = "red";
+        });
+});
