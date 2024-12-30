@@ -32,6 +32,7 @@ async function fetchMovies() {
 // 插入movie資料到下拉選單
 function populateDropdown_movie(movies) {
     const moviesDropdown = document.getElementById('movie'); // 選擇下拉選單
+    moviesDropdown.innerHTML = '';
     movies.forEach(movie => {
         const option = document.createElement('option'); // 創建新選項
         option.value = movie.id; // 設置選項的值
@@ -68,6 +69,7 @@ async function fetchtheater() {
 // 插入theater資料到下拉選單
 function populateDropdown_theater(theaters) {
     const theaterDropdown = document.getElementById('theater'); // 選擇下拉選單
+    theaterDropdown.innerHTML = '';
     theaters.forEach(theater => {
         const option = document.createElement('option'); // 創建新選項
         option.value = theater.id; // 設置選項的值
@@ -80,20 +82,64 @@ function populateDropdown_theater(theaters) {
 function handleSelectionChange() {
     const movieDropdown = document.getElementById('movie');
     const theaterDropdown = document.getElementById('theater');
+    const sectionDropdown = document.getElementById('section');
+    const dateInput = document.getElementById('date');
 
     const selectedMovieID = movieDropdown.value;
     const selectedTheaterID = theaterDropdown.value;
+    const selectedDate = dateInput.value;
+    const selectedSectionID = sectionDropdown.value;
 
-    if (selectedMovieID && selectedTheaterID) {
-        console.log(`選擇的電影 ID：${selectedMovieID}, 影城 ID：${selectedTheaterID}`);
-        fetchSection(selectedMovieID, selectedTheaterID);
-    }
+    fetchSection(selectedMovieID, selectedTheaterID);
+
+    if (selectedMovieID && selectedTheaterID && selectedDate && selectedSectionID) {
+        console.log(`選擇的電影 ID：${selectedMovieID}, 影城 ID：${selectedTheaterID}, 日期：${selectedDate}, 場次 ID：${selectedSectionID}`);
+        
+        // 發送請求獲取已被訂走的座位
+        fetchOccupiedSeats(selectedSectionID, selectedDate);
+    }  
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('movie').addEventListener('change', handleSelectionChange);
     document.getElementById('theater').addEventListener('change', handleSelectionChange);
+    document.getElementById('date').addEventListener('change', handleSelectionChange);
+    document.getElementById('section').addEventListener('change', handleSelectionChange);
 });
+
+async function fetchOccupiedSeats(sessionId, date) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer a974f9b8a917f49dd75168ff85072644");
+
+    const requestBody = {
+        date: date
+    };
+
+    const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        body: JSON.stringify(requestBody),
+        redirect: 'follow'
+    };
+
+    try {
+        
+        const response = await fetch(`http://woodendoor.duckdns.org:8080/seat/session/${sessionId}`, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        const occupiedSeats = result["data"];
+        console.log(response);
+        // 使用返回的已佔用座位更新座位圖
+        generateSeatMap(10, 8, occupiedSeats);
+    } catch (error) {
+        console.error('Error fetching occupied seats:', error);
+        alert('獲取已佔用座位時發生錯誤，請稍後再試！');
+    }
+}
 
 async function fetchSection(movieId, theaterId) {
     var myHeaders = new Headers();
@@ -124,6 +170,7 @@ async function fetchSection(movieId, theaterId) {
 
 function populateDropdown_section(sections) {
     const sectionDropdown = document.getElementById('section'); // 選擇下拉選單
+    sectionDropdown.innerHTML = '';
     sections.forEach(section => {
         const option = document.createElement('option'); // 創建新選項
         option.value = section.id; // 設置選項的值
@@ -173,15 +220,6 @@ seats.forEach(seat => {
     });
 });
 
-// 搜尋功能
-function filterMovies() {
-    const query = document.getElementById('searchInput').value.trim().toLowerCase();
-    const filteredMovies = movies.filter((movie) =>
-        movie.title.toLowerCase().includes(query)
-    );
-    renderMovies(filteredMovies);
-}
-
 // 實現頁面切換功能
 function navigateTo(pageId) {
     const pages = document.querySelectorAll('.page');
@@ -190,30 +228,9 @@ function navigateTo(pageId) {
 }
 
 
-
-// 購票功能
-function goToBooking() {
-    const location = document.getElementById("location").value;
-    const movie = document.getElementById("movie").value;
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value;
-
-    if (!location || !movie || !date || !time) {
-        alert("請完整填寫所有欄位！");
-        return;
-    }
-
-    alert(`前往訂票：
-影城: ${location}
-影片: ${movie}
-日期: ${date}
-場次: ${time}`);
-}
-
-
 // 在頁面加載時直接生成座位圖
 document.addEventListener('DOMContentLoaded', () => {
-    generateSeatMap(10, 8, ['H8', 'H9', 'I8', 'I9']); // 生成10行12列的座位圖
+    generateSeatMap(10, 8); // 生成10行12列的座位圖
 });
 
 // 動態生成座位圖的函數
@@ -245,6 +262,7 @@ function generateSeatMap(rows, columns, occupiedSeats = []) {
         }       
     }
 }
+
 // 工具函數：生成單個座位
 function createSeat(seatId, occupiedSeats) {
     const seat = document.createElement('div');
@@ -278,43 +296,47 @@ async function submitBooking() {
     const movie = document.getElementById('movie').value;
     const theater = document.getElementById('theater').value;
     const section = document.getElementById('section').value;
+    const date = document.getElementById('date').value;
     const seats = Array.from(document.querySelectorAll('.seat.selected')).map(seat => seat.textContent);
 
-    if (!movie || !theater || !section || seats.length === 0) {
+    if (!movie || !theater || !section || !date || seats.length === 0) {
         alert('請選擇完整的電影、影城、場次和座位！');
         return;
     }
 
     // 準備要發送的資料
-    const bookingData = {
-        movieId: movie,
-        theaterId: theater,
-        sectionId: section,
-        seats: seats
-    };
+    for (let i = 0; i < seats.length; i++){
+        
+        const bookingData = {
+            sessionId: section,
+            seatNumber: seats[i],
+            date : date
+        };
 
-    try {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        myHeaders.append("Authorization", "Bearer a974f9b8a917f49dd75168ff85072644");
+        try {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", "Bearer a974f9b8a917f49dd75168ff85072644");
 
-        const response = await fetch('http://woodendoor.duckdns.org:8080/booking', {
-            method: 'POST',
-            headers: myHeaders,
-            body: JSON.stringify(bookingData),
-        });
+            const response = await fetch('http://woodendoor.duckdns.org:8080/ticket', {
+                method: 'POST',
+                headers: myHeaders,
+                body: JSON.stringify(bookingData),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const result = await response.json();
+            alert(`訂票成功！ 訂單編號：${result["data"]}`);
+        } catch (error) {
+            console.error('Error submitting booking:', error);
+            alert('提交訂票資料時發生錯誤，請稍後再試！');
         }
-
-        const result = await response.json();
-        alert(`訂票成功！ 訂單編號：${result.orderId}`);
-    } catch (error) {
-        console.error('Error submitting booking:', error);
-        alert('提交訂票資料時發生錯誤，請稍後再試！');
     }
 }
+
+
 
 
 // 初始化：拉取電影資料

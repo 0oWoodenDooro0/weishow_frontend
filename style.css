@@ -181,7 +181,7 @@ input[type="date"] {
 
 .seat-map {
     display: grid;
-    grid-template-columns: repeat(2, 1fr) 0.5fr repeat(6, 1fr) 0.5fr repeat(2, 1fr); 
+    grid-template-columns: repeat(10, 1fr); /* 10 列座位 */
     gap: 10px; /* 座位間距 */
     justify-content: center; /* 居中對齊 */
     padding: 10px; /* 添加內邊距 */
