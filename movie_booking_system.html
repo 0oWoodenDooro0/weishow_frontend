@@ -7,63 +7,108 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="layout">
-        <!-- 側邊欄 -->
-        <aside class="sidebar">
-            <h1 class="logo">萎鏽電影</h1>
-            <h2>功能選單</h2>
-            <ul>
-                <li><button onclick="navigateTo('booking')">訂票畫面</button></li>
-                <li><button onclick="navigateTo('schedule')">電影時刻查詢</button></li>
-                <li><button onclick="navigateTo('membership')">會員查詢</button></li>
-            </ul>
-        </aside>
+<div class="layout">
+    <!-- 側邊欄 -->
+    <aside class="sidebar">
+        <h1 class="logo">萎鏽電影</h1>
+        <h2>功能選單</h2>
+        <ul>
+            <li><button onclick="navigateTo('booking')">訂票畫面</button></li>
+            <li><button onclick="navigateTo('schedule')">電影時刻查詢</button></li>
+            <li id="membershipMenu" style="display: none;"><button onclick="navigateTo('membership')">會員查詢</button></li>
+            <li><button onclick="navigateTo('login')">登入</button></li>
+            <li><button onclick="navigateTo('register')">註冊</button></li>
+        </ul>
+    </aside>
 
-        <!-- 內容區域 -->
-        <main class="content">
-            <!-- 搜尋欄 -->
-            <div class="search-bar">
-                <input
+    <!-- 內容區域 -->
+    <main class="content">
+        <button id="logoutButton" onclick="logout()" style="display: none;">登出</button>
+        <!-- 搜尋欄 -->
+        <div class="search-bar">
+            <input
                     type="text"
                     id="searchInput"
                     placeholder="輸入電影名稱搜尋..."
                     oninput="filterMovies()"
-                />
-            </div>
-            <div id="booking" class="page active">
-                <!-- 原有的訂票內容 -->
-                <div id="movies" class="movies"></div>
-                <label for="showtime">選擇場次：</label>
-                <select id="showtime">
-                    <option value="10:00">10:00</option>
-                    <option value="14:00">14:00</option>
-                    <option value="18:00">18:00</option>
-                    <option value="21:00">21:00</option>
-                </select>
-                <div class="seat-container">
-                    <h2>選擇座位：</h2>
-                    <div class="seats">
-                        <div class="row">
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                            <div class="seat"></div>
-                        </div>
+            />
+        </div>
+        <div id="booking" class="page active">
+            <!-- 原有的訂票內容 -->
+            <div id="movies" class="movies"></div>
+            <label for="showtime">選擇場次：</label>
+            <select id="showtime">
+                <option value="10:00">10:00</option>
+                <option value="14:00">14:00</option>
+                <option value="18:00">18:00</option>
+                <option value="21:00">21:00</option>
+            </select>
+            <div class="seat-container">
+                <h2>選擇座位：</h2>
+                <div class="seats">
+                    <div class="row">
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
+                        <div class="seat"></div>
                     </div>
                 </div>
-                <p id="summary">已選座位數：<span id="count">0</span>，總金額：NT$<span id="total">0</span></p>
             </div>
-            <div id="schedule" class="page">
-                <h1>電影時刻查詢</h1>
-                <p>這裡顯示電影時刻表...</p>
+            <p id="summary">已選座位數：<span id="count">0</span>，總金額：NT$<span id="total">0</span></p>
+        </div>
+        <div id="schedule" class="page">
+            <h1>電影時刻查詢</h1>
+            <p>這裡顯示電影時刻表...</p>
+        </div>
+        <!-- 登入表單 -->
+        <div id="login" class="page">
+            <h1>登入</h1>
+            <form id="loginForm">
+                <label for="loginEmail">電子信箱：</label>
+                <input type="email" id="loginEmail" required><br>
+                <label for="loginPassword">密碼：</label>
+                <input type="password" id="loginPassword" required><br>
+                <button type="submit">登入</button>
+            </form>
+            <p id="loginMessage"></p>
+        </div>
+        <!-- 註冊表單 -->
+        <div id="register" class="page">
+            <h1>註冊</h1>
+            <form id="registerForm">
+                <label for="registerUsername">用戶名：</label>
+                <input type="text" id="registerUsername" required><br>
+                <label for="registerEmail">電子信箱：</label>
+                <input type="email" id="registerEmail" required><br>
+                <label for="registerPassword">密碼：</label>
+                <input type="password" id="registerPassword" required><br>
+                <label for="confirmPassword">確認密碼：</label>
+                <input type="password" id="confirmPassword" required><br>
+                <button type="submit">註冊</button>
+            </form>
+            <p id="registerMessage"></p>
+        </div>
+        <!-- 會員查詢 -->
+        <div id="membership" class="page">
+            <h2>訂票歷史</h2>
+            <div id="ticketHistory">
+                <button type="button" onclick="cancelSelectedTickets()">取消訂單</button>
+                <div class="ticket-summary">
+                    <span>id</span>
+                    <span>theaterName</span>
+                    <span>screenNumber</span>
+                    <span>date</span>
+                    <span>movieName</span>
+                    <span>startTime</span>
+                    <span>seatNumber</span>
+                    <span>price</span>
+                </div>
+                <ul id="ticketList"></ul>
             </div>
-            <div id="membership" class="page">
-                <h1>會員查詢</h1>
-                <p>這裡顯示會員相關資訊...</p>
-            </div>
-        </main>
-    </div>
+        </div>
+    </main>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

@@ -12,7 +12,6 @@
     margin-bottom: 20px;
 }
 
-
 /* 側邊欄 */
 .sidebar {
     width: 200px;
@@ -118,4 +117,44 @@
 .movie-card.highlight {
     background-color: #f0f8ff;
     border-color: #6c63ff;
+}
+
+/* 會員查詢區域 */
+.ticket-summary {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.ticket-item {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancel-checkbox {
+    margin-left: 10px;
+}
+
+/* 登出按鈕 */
+#logoutButton {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logoutButton:hover {
+    background-color: #e53935;
 }
