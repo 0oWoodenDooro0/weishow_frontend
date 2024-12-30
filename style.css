@@ -240,6 +240,7 @@ button {
     cursor: pointer;
     width: 48%;
     text-align: center;
+    margin: 20px auto; /* 上下留出間距，水平自動對齊 */
 }
 
 button:hover {

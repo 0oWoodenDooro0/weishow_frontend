@@ -76,43 +76,50 @@ function populateDropdown_theater(theaters) {
     });
 }
 
+// 根據選擇的電影和影城拉取場次資料
+function handleSelectionChange() {
+    const movieDropdown = document.getElementById('movie');
+    const theaterDropdown = document.getElementById('theater');
 
-// 監聽下拉選單變化
+    const selectedMovieID = movieDropdown.value;
+    const selectedTheaterID = theaterDropdown.value;
+
+    if (selectedMovieID && selectedTheaterID) {
+        console.log(`選擇的電影 ID：${selectedMovieID}, 影城 ID：${selectedTheaterID}`);
+        fetchSection(selectedMovieID, selectedTheaterID);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    fetchMovies(); // 獲取並填充電影資料
-    fetchtheater(); // 獲取並填充影城資料
-
-    // 添加事件監聽器
     document.getElementById('movie').addEventListener('change', handleSelectionChange);
     document.getElementById('theater').addEventListener('change', handleSelectionChange);
 });
 
-
-// 從後端 API 獲取場次資料
-async function fetchSection(movieID, theaterID) {
+async function fetchSection(movieId, theaterId) {
     var myHeaders = new Headers();
-
+    myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", "Bearer a974f9b8a917f49dd75168ff85072644");
-
+    const GetTargetData = {
+        theaterId: theaterId,
+        movieId: movieId
+    };
     var requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: myHeaders,
+        body: JSON.stringify(GetTargetData),
         redirect: 'follow'
     };
 
-    try {
-        const url = `http://woodendoor.duckdns.org:8080/?movieID=${movieID}&theaterID=${theaterID}`;
-        const response = await fetch(url, requestOptions);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-
-        populateDropdown_section(section["data"]);
-    } catch (error) {
-        console.error('Error fetching section:', error);
-    }
+    fetch(`http://woodendoor.duckdns.org:8080/session/theater/movie`, requestOptions)
+        .then((response) => {
+            if(!response.ok){
+                throw new Error('資料不存在');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            populateDropdown_section(data["data"]);
+        });
 }
 
 function populateDropdown_section(sections) {
@@ -120,7 +127,9 @@ function populateDropdown_section(sections) {
     sections.forEach(section => {
         const option = document.createElement('option'); // 創建新選項
         option.value = section.id; // 設置選項的值
-        option.textContent = section.name; // 設置選項的顯示文本
+        // 格式化時間為 HH:mm
+        const [hour, minute] = section.startTime.split(':'); // 分割時間為小時和分鐘
+        option.textContent = `${hour}:${minute}`; // 設置選項的顯示文本
         sectionDropdown.appendChild(option); // 將選項插入到下拉選單中
     });
 }
@@ -257,12 +266,54 @@ function createSeat(seatId, occupiedSeats) {
     return seat;
 }
 
-
 // 確認座位選擇
 function confirmSeats() {
     const selectedSeats = document.querySelectorAll('.seat.selected');
     const seatNumbers = Array.from(selectedSeats).map(seat => seat.textContent);
     alert(`您已選擇的座位：${seatNumbers.join(', ')}`);
+}
+
+// 回傳資料庫，電影、影城、場次、座位資料
+async function submitBooking() {
+    const movie = document.getElementById('movie').value;
+    const theater = document.getElementById('theater').value;
+    const section = document.getElementById('section').value;
+    const seats = Array.from(document.querySelectorAll('.seat.selected')).map(seat => seat.textContent);
+
+    if (!movie || !theater || !section || seats.length === 0) {
+        alert('請選擇完整的電影、影城、場次和座位！');
+        return;
+    }
+
+    // 準備要發送的資料
+    const bookingData = {
+        movieId: movie,
+        theaterId: theater,
+        sectionId: section,
+        seats: seats
+    };
+
+    try {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", "Bearer a974f9b8a917f49dd75168ff85072644");
+
+        const response = await fetch('http://woodendoor.duckdns.org:8080/booking', {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify(bookingData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        alert(`訂票成功！ 訂單編號：${result.orderId}`);
+    } catch (error) {
+        console.error('Error submitting booking:', error);
+        alert('提交訂票資料時發生錯誤，請稍後再試！');
+    }
 }
 
 
