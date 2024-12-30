@@ -65,76 +65,65 @@ async function fetchtheater() {
     }
 }
 
-
 // 插入theater資料到下拉選單
-function populateDropdown_theater(locations) {
-    const theaterDropdown = document.getElementById('location'); // 選擇下拉選單
-    locations.forEach(location => {
+function populateDropdown_theater(theaters) {
+    const theaterDropdown = document.getElementById('theater'); // 選擇下拉選單
+    theaters.forEach(theater => {
         const option = document.createElement('option'); // 創建新選項
-        option.value = location.id; // 設置選項的值
-        option.textContent = location.name; // 設置選項的顯示文本
-        locationDropdown.appendChild(option); // 將選項插入到下拉選單中
+        option.value = theater.id; // 設置選項的值
+        option.textContent = theater.name; // 設置選項的顯示文本
+        theaterDropdown.appendChild(option); // 將選項插入到下拉選單中
     });
 }
+
+
+// 監聽下拉選單變化
 document.addEventListener('DOMContentLoaded', () => {
     fetchMovies(); // 獲取並填充電影資料
-    fetchLocations(); // 獲取並填充影城資料
+    fetchtheater(); // 獲取並填充影城資料
 
     // 添加事件監聽器
     document.getElementById('movie').addEventListener('change', handleSelectionChange);
-    document.getElementById('location').addEventListener('change', handleSelectionChange);
+    document.getElementById('theater').addEventListener('change', handleSelectionChange);
 });
 
+
+// 從後端 API 獲取場次資料
 async function fetchSection(movieID, theaterID) {
     var myHeaders = new Headers();
 
     myHeaders.append("Authorization", "Bearer a974f9b8a917f49dd75168ff85072644");
 
     var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
     };
 
     try {
         const url = `http://woodendoor.duckdns.org:8080/?movieID=${movieID}&theaterID=${theaterID}`;
-        const response = await fetch(url, requestOptions); // 後端 API URL
-        if(!response.ok) {
-            throw new Error('HTTP error! status : ${response.status}');
+        const response = await fetch(url, requestOptions);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const section = await response.json();
-        populateDropdown_section(section["data"]); 
+        const data = await response.json();
+
+        populateDropdown_section(section["data"]);
     } catch (error) {
-        console.error('Error fetching theater:', error);
+        console.error('Error fetching section:', error);
     }
 }
 
-function populateDropdown_section(section) {
-    const sectionDropdown = document.getElementById('time'); // 選擇下拉選單
-    sectionDropdown.innerHTML = '<option value="">請選擇時間</option>';
-    section.forEach(section => {
+function populateDropdown_section(sections) {
+    const sectionDropdown = document.getElementById('section'); // 選擇下拉選單
+    sections.forEach(section => {
         const option = document.createElement('option'); // 創建新選項
         option.value = section.id; // 設置選項的值
-        option.textContent = section.time; // 設置選項的顯示文本
+        option.textContent = section.name; // 設置選項的顯示文本
         sectionDropdown.appendChild(option); // 將選項插入到下拉選單中
     });
 }
-
-function handleSelectionChange() {
-    // 獲取當前選中的 movieID 和 theaterID
-    const movieDropdown = document.getElementById('movie');
-    const theaterDropdown = document.getElementById('location');
-
-    const selectedMovieID = movieDropdown.value; // 獲取選中的電影 ID
-    const selectedTheaterID = theaterDropdown.value; // 獲取選中的影城 ID
-
-    // 確保兩者都有值後，調用 fetchSection
-    if (selectedMovieID && selectedTheaterID) {
-        fetchSection(selectedMovieID, selectedTheaterID);
-    }
-}
-
-
 
 // 動態生成電影卡片
 function renderMovies(data) {
@@ -280,4 +269,3 @@ function confirmSeats() {
 // 初始化：拉取電影資料
 fetchMovies();
 fetchtheater();
-fetchSection();
