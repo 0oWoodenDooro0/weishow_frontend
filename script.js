@@ -117,14 +117,13 @@ async function fetchOccupiedSeats(sessionId, date) {
     };
 
     const requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(requestBody),
         redirect: 'follow'
     };
 
     try {
-        
         const response = await fetch(`http://woodendoor.duckdns.org:8080/seat/session/${sessionId}`, requestOptions);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -132,7 +131,7 @@ async function fetchOccupiedSeats(sessionId, date) {
 
         const result = await response.json();
         const occupiedSeats = result["data"];
-        console.log(response);
+        console.log(occupiedSeats);
         // 使用返回的已佔用座位更新座位圖
         generateSeatMap(10, 8, occupiedSeats);
     } catch (error) {
@@ -234,7 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 動態生成座位圖的函數
-function generateSeatMap(rows, columns, occupiedSeats = []) {
+function generateSeatMap(rows, columns, occupiedSeat = []) {
+    const occupiedSeats = occupiedSeat.map(seat => seat.number);
     const seatMap = document.querySelector('.seat-map');
     seatMap.innerHTML = ''; // 清空現有座位
 
